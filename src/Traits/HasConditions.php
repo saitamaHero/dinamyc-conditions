@@ -23,7 +23,7 @@ trait HasConditions {
 
 
         if (empty($conditions)) {
-            throw new Exception("Group Conditions can not execute without conditions");
+            throw new \Exception("Group Conditions can not execute without conditions");
         }
 
         $conditionResult = true;
@@ -45,7 +45,7 @@ trait HasConditions {
 
             // var_dump(['cr1' => $conditionResult, 'cr2' => $currentResult]);
 
-            $conditionResult = $condition->getLogicalOperator() === self::OR ? 
+            $conditionResult = $condition->getLogicalOperator() === "OR" ? 
                 $conditionResult || $currentResult :
                 $conditionResult && $currentResult;
         }
