@@ -5,7 +5,7 @@ require './vendor/autoload.php';
 
 use SaitamaHero\Conditions\{
     ConditionGroup,
-    Equals, 
+    Equals,
     ConditionInterface as Condition,
     MatchPattern,
     GreaterThan,
@@ -22,8 +22,8 @@ use SaitamaHero\Conditions\Evaluators\Evaluator;
 
 
 $groupConditions = new ConditionGroup();
-$groupConditions->add(new Equals([1,1], Condition::OR));
-$groupConditions->add(new Equals(["b","a"], 'and', [
+$groupConditions->add(new Equals([1, 1], Condition::OR));
+$groupConditions->add(new Equals(["b", "a"], 'and', [
     'insensitive' => true
 ]));
 
@@ -35,7 +35,7 @@ $groupConditions->add(new Equals(["b","a"], 'and', [
 
 $groupConditions2 = new ConditionGroup();
 // $groupConditions2->add(new Equals([1,1], Condition::OR));
-$groupConditions2->add(new GreaterThan(["d","b"]));
+$groupConditions2->add(new GreaterThan(["d", "b"]));
 
 // var_dump($groupConditions2->explain(), $groupConditions2->execute());
 // die(
@@ -45,7 +45,7 @@ $groupConditions2->add(new GreaterThan(["d","b"]));
 $groupConditions3 = new ConditionGroup();
 $groupConditions3->add($groupConditions);
 $groupConditions3->add(new MatchPattern(['Dionicio', 'o$'], Condition::AND));
-$groupConditions3->add(new GreaterOrEqualsThan([1,1], Condition::AND));
+$groupConditions3->add(new GreaterOrEqualsThan([1, 1], Condition::AND));
 // var_dump($groupConditions3->explain(), $groupConditions3->execute());
 // die(
 //     'ls'
@@ -67,12 +67,13 @@ $evaluator->add(new IsEmpty([null], Condition::AND, [], false));
 // echo '<pre>';
 // var_dump($evaluator->execute());
 
-class ConditionBuilder {
+class ConditionBuilder
+{
     protected $definedConditions = [
-        'equals' => Equals::class,    
+        'equals' => Equals::class,
         'lessThan' => LessThan::class,
         'lessOrEquals' => LessOrEqualThan::class,
-        'greaterThan' => GreaterThan::class,    
+        'greaterThan' => GreaterThan::class,
         'greaterOrEqualsThan' => GreaterOrEqualsThan::class,
         'match' => MatchPattern::class
     ];
@@ -83,7 +84,7 @@ class ConditionBuilder {
         ''
 
     ];
-    
+
     protected $conditions = [];
 
 
@@ -91,7 +92,7 @@ class ConditionBuilder {
 
     protected $evaluator = null;
 
-    // protected $conditionArray = [];
+    protected $conditionArray = [];
 
     public function withData($data)
     {
@@ -99,16 +100,17 @@ class ConditionBuilder {
         return $this;
     }
 
-    public function withEvaluator(Evaluator $evaluator) {
+    public function withEvaluator(Evaluator $evaluator)
+    {
         $this->evaluator = $evaluator;
         return $this;
     }
 
-    public function withConditionsArray(array $conditions) 
+    public function withConditionsArray(array $conditions)
     {
 
         //TODO Do this apart
-        foreach($conditions as $condition) {
+        foreach ($conditions as $condition) {
 
             //TODO handle conditions group
 
@@ -123,22 +125,23 @@ class ConditionBuilder {
 
             $this->add($condition['condition'], $arguments, $boolean);
         }
-
     }
 
-    protected function getFromData(string $key) {
+    protected function getFromData(string $key)
+    {
         if (is_null($this->data)) {
             return $key;
         }
 
-        if (is_array($this->data) || ($this->data instanceof ArrayAccess)){
+        if (is_array($this->data) || ($this->data instanceof ArrayAccess)) {
             return isset($this->data[$key]) ? $this->data[$key] : $key;
         }
 
         return property_exists($this->data, $key) ? $this->data->{$key} : $key;
     }
 
-    public function add(string $condition, array $params, string $logicalOperator) {
+    public function add(string $condition, array $params, string $logicalOperator)
+    {
         if (!key_exists($condition, $this->definedConditions)) {
             throw new Exception("Error Processing Request", 1);
         }
@@ -153,11 +156,13 @@ class ConditionBuilder {
         return $this;
     }
 
-    public function getEvaluator() {
+    public function getEvaluator()
+    {
         return $this->evaluator;
     }
 
-    public function getConditions() {
+    public function getConditions()
+    {
         return $this->conditions;
     }
 }
@@ -183,7 +188,7 @@ $rules = [
             'Dionicio'
         ],
         'options' => [
-            'insensitive' => true,
+            // 'insensitive' => true,
         ],
         'boolean' => "OR"
     ],
@@ -191,17 +196,19 @@ $rules = [
         'condition' => 'match',
         'arguments' => [
             'first_name',
-            'oe$'
+            // 'oe$'
+            '^D|oe$'
         ],
         'options' => [
-            'insensitive' => true,
+            // 'insensitive' => true,
         ],
         'boolean' => "OR"
     ],
 ];
 
 $data = [
-    'first_name' => 'Joe Doe',
+    'first_name' => 'Joe',
+    'last_name' => 'Doe',
     'val1'  => "PEPE"
 ];
 
@@ -210,13 +217,13 @@ $conditionBuilder = new ConditionBuilder();
 
 $ev = new ConditionEvaluator();
 $conditionBuilder
-->withEvaluator($ev)
-->withData($data)
-->withConditionsArray($rules);
+    ->withEvaluator($ev)
+    ->withData($data)
+    ->withConditionsArray($rules);
 
 
 
 echo '<pre>';
-echo($ev->explain());
+echo ($ev->explain());
 var_dump($ev->execute());
 echo '</pre>';

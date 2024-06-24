@@ -1,0 +1,22 @@
+# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs
+# For more details: https://editorconfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# PHP files
+[*.php]
+indent_style = space
+indent_size = 4
+
+# Ignore files
+# Example: ignore .htaccess files
+[*.htaccess]
+indent_style = tab
