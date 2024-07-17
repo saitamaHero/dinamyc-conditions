@@ -108,10 +108,9 @@ class ConditionBuilder
 
     public function withConditionsArray(array $conditions)
     {
-
         //TODO Do this apart
-        foreach ($conditions as $condition) {
 
+        foreach ($conditions as $condition) {
             //TODO handle conditions group
 
             //TODO handle a better way
@@ -171,27 +170,27 @@ class ConditionBuilder
 
 
 $rules = [
-    [
-        'condition' => 'equals',
-        'arguments' => [
-            'val1',
-            'Hola'
-        ],
-        'options' => [
-            'insensitive' => true,
-        ]
-    ],
-    [
-        'condition' => 'equals',
-        'arguments' => [
-            'first_name',
-            'Dionicio'
-        ],
-        'options' => [
-            // 'insensitive' => true,
-        ],
-        'boolean' => "OR"
-    ],
+    // [
+    //     'condition' => 'equals',
+    //     'arguments' => [
+    //         'val1',
+    //         'Hola'
+    //     ],
+    //     'options' => [
+    //         'insensitive' => true,
+    //     ]
+    // ],
+    // [
+    //     'condition' => 'equals',
+    //     'arguments' => [
+    //         'first_name',
+    //         'Dionicio'
+    //     ],
+    //     'options' => [
+    //         // 'insensitive' => true,
+    //     ],
+    //     // 'boolean' => "OR"
+    // ],
     [
         'condition' => 'match',
         'arguments' => [
@@ -204,12 +203,48 @@ $rules = [
         ],
         'boolean' => "OR"
     ],
+    [
+        'condition' => 'greaterThan',
+        'arguments' => [
+            'age',
+            '30'
+        ],
+        'options' => [
+            // 'insensitive' => true,
+        ],
+        'boolean' => "OR"
+    ],
+    [
+        'condition' => 'greaterThan',
+        'arguments' => [
+            '250',
+            '30'
+        ],
+        'options' => [
+            // 'insensitive' => true,
+        ],
+        'boolean' => "OR"
+    ],
+    [
+        'condition' => 'greaterThan',
+        'arguments' => [
+            '200',
+            '30'
+        ],
+        'options' => [
+            // 'insensitive' => true,
+        ],
+        'boolean' => "AND"
+    ],
+
 ];
 
 $data = [
-    'first_name' => 'Joe',
+    // 'first_name' => 'Dionicio',
+    'first_name' => 'You are gay',
     'last_name' => 'Doe',
-    'val1'  => "PEPE"
+    'val1'  => "PEPE",
+    'age' => 27
 ];
 
 
@@ -224,6 +259,11 @@ $conditionBuilder
 
 
 echo '<pre>';
+echo '<h3>';
 echo ($ev->explain());
-var_dump($ev->execute());
+echo '</h3>';
+echo '<br>';
+echo '<h4> Result Execution -> ' . strval(intval($ev->execute())) . '</h4>';
 echo '</pre>';
+
+// echo var_dump(intval(false || false || true && true));

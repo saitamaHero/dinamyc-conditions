@@ -9,12 +9,14 @@ class ConditionEvaluator implements Evaluator
     use HasConditions;
 
     protected $conditions = [];
-    
-    public function getLogicalOperator() : ?string {
+
+    public function getLogicalOperator(): ?string
+    {
         return null;
     }
 
-    public function reset() {
+    public function reset()
+    {
         $this->conditions = [];
     }
 }
